@@ -1,21 +1,34 @@
 package com.programmingpractitioner.ppmtool.project;
 
+import com.programmingpractitioner.ppmtool.backlog.Backlog;
+import com.programmingpractitioner.ppmtool.backlog.BacklogRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    public ProjectService(ProjectRepository projectRepository) {
+    private final BacklogRepository backlogRepository;
+    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository) {
         this.projectRepository = projectRepository;
+        this.backlogRepository = backlogRepository;
     }
 
     public Project saveOrUpdateProject(Project project) {
         try {
-            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            project.setProjectIdentifier(project.getProjectIdentifier());
+            if (project.getId() == null) {
+                Backlog backlog = new Backlog();
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(project.getProjectIdentifier());
+                project.setBacklog(backlog);
+            }
+            if (project.getId() != null) {
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier()));
+            }
             return projectRepository.save(project);
         } catch (Exception e) {
-            throw new ProjectIdException("Project Id '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
+            throw new ProjectIdException("Project Id '" + project.getProjectIdentifier() + "' already exists");
         }
     }
 
