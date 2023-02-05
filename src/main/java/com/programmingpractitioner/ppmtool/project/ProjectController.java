@@ -19,20 +19,26 @@ public class ProjectController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> createProject(@Valid @RequestBody Project project, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mavValidationService(result);
         if (errorMap != null) return errorMap;
         return new ResponseEntity<>(projectService.saveOrUpdateProject(project), HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectIdentifier}")
-    public ResponseEntity<?> getProjectByProjectIdentifier(@PathVariable String projectIdentifier) {
+    public ResponseEntity<?> getProject(@PathVariable String projectIdentifier) {
         Project project = projectService.findProjectByIdentifier(projectIdentifier);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @GetMapping("")
-    public Iterable<?> getAllProjects() {
+    public Iterable<?> getProjects() {
         return projectService.findAllProjects();
+    }
+
+    @DeleteMapping("/{projectIdentifier}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectIdentifier) {
+        projectService.deleteProjectByProjectIdentifier(projectIdentifier);
+        return new ResponseEntity<>("Project with ID '" + projectIdentifier + "' was deleted", HttpStatus.OK);
     }
 }
