@@ -13,15 +13,15 @@ public class ProjectTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String projectSequence;
 
     @NotBlank(message = "Please include a project summary")
     private String summary;
 
     private String acceptanceCriteria;
-    private String status;
-    private Integer priority;
+    private ProjectTaskStatus status;
+    private ProjectTaskPriority priority;
     private Date dueDate;
 
     // ManyToOne with Backlog
@@ -71,19 +71,19 @@ public class ProjectTask {
         this.acceptanceCriteria = acceptanceCriteria;
     }
 
-    public String getStatus() {
+    public ProjectTaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProjectTaskStatus status) {
         this.status = status;
     }
 
-    public Integer getPriority() {
+    public ProjectTaskPriority getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public void setPriority(ProjectTaskPriority priority) {
         this.priority = priority;
     }
 

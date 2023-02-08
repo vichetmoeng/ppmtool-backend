@@ -1,6 +1,7 @@
 package com.programmingpractitioner.ppmtool.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.programmingpractitioner.ppmtool.backlog.Backlog;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +32,7 @@ public class Project {
     private Date updatedAt;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    @JsonIgnore
     private Backlog backlog;
 
     public Project() {

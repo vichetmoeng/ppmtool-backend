@@ -24,6 +24,7 @@ public class Backlog {
 
     // OntToMany projectTasks
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
+    @JsonIgnore
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
     public Backlog() {
